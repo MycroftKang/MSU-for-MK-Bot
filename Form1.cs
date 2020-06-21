@@ -43,21 +43,9 @@ namespace MSU
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((e.CloseReason != CloseReason.ApplicationExitCall)&&(MessageBox.Show("Mulgyeol Distance Fetcher 업데이트를 취소하시겠습니까?", "Mulgyeol Software Update", MessageBoxButtons.YesNo) == DialogResult.No))
+            if (e.CloseReason != CloseReason.ApplicationExitCall)
             {
                 e.Cancel = true;
-            }
-            else
-            {
-                Console.WriteLine(sender.ToString());
-                try
-                {
-                    sprocess.Kill();
-                }
-                catch
-                {
-                    Console.WriteLine("Already Exited");
-                }
             }
         }
     }
