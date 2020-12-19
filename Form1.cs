@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -12,6 +13,7 @@ namespace MSU
         public Form1()
         {
             InitializeComponent();
+            this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - this.Width, Screen.PrimaryScreen.WorkingArea.Height - this.Height);
             args = Environment.GetCommandLineArgs();
             int pos = (this.ClientSize.Width - progressBar1.Width) / 2;
             progressBar1.Left = pos;

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{480B281F-772F-4232-B22E-2F02A071EF50}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>msu</RootNamespace>
-    <AssemblyName>msu</AssemblyName>
+    <RootNamespace>Update</RootNamespace>
+    <AssemblyName>Update</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
