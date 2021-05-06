@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,6 +15,16 @@ namespace MSU
         [STAThread]
         static void Main()
         {
+            bool createnew;
+
+            Mutex mutex = new Mutex(true, "MulgyeolAutoUpdaterforMKBot", out createnew);
+
+            if (!createnew)
+            {
+                Console.WriteLine("MSU is already running.");
+                return;
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Updater());
