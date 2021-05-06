@@ -25,7 +25,7 @@ namespace MSU
 
             string[] args = Environment.GetCommandLineArgs();
 
-            if (!args.Contains("/start"))
+            if (!(args.Contains("/start") && check_ready_to_update()))
             {
                 Environment.Exit(0);
             }
@@ -46,6 +46,7 @@ namespace MSU
         private void init_update_worker()
         {
             update_worker = new BackgroundWorker();
+
             update_worker.WorkerReportsProgress = false;
 
             update_worker.WorkerSupportsCancellation = true;
@@ -69,6 +70,8 @@ namespace MSU
         {
             do
             {
+                kill_process();
+
                 delete_dirs_and_files(update_folder_name);
 
                 Console.WriteLine("Wait for deleting...");
@@ -82,6 +85,11 @@ namespace MSU
             {
                 Process.Start("MKBot.exe");
             }
+        }
+
+        private bool check_ready_to_update()
+        {
+            return File.Exists("./Update.flag");
         }
 
         private void move_from_update_dir(string update_folder_name)
@@ -173,6 +181,29 @@ namespace MSU
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        private void kill_process()
+        {
+            string[] all_exes = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath)).GetFiles("*.exe", SearchOption.AllDirectories).Where(x => x.Name != "Update.exe").Select(x => x.FullName).ToArray();
+
+            Process[] runningProcesses = Process.GetProcesses();
+
+            foreach (Process process in runningProcesses)
+            {
+                try
+                {
+                    if (process.MainModule != null && all_exes.Contains(process.MainModule.FileName))
+                    {
+                        Console.WriteLine("Kill " + process.MainModule.FileName);
+                        process.Kill();
+                    }
+                }
+                catch (Exception)
+                {
+                    //Console.WriteLine(ex.Message);
                 }
             }
         }
