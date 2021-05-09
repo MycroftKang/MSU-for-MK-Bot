@@ -13,6 +13,7 @@ namespace MSU
     {
         private bool auto_run = false;
         private BackgroundWorker update_worker;
+        private string update_dir_name = "_";
 
         public Updater()
         {
@@ -58,7 +59,7 @@ namespace MSU
 
         private void do_update(object sender, DoWorkEventArgs e)
         {
-            install_update("_");
+            install_update(update_dir_name);
         }
 
         private void update_completed(object sender, RunWorkerCompletedEventArgs e)
@@ -68,16 +69,21 @@ namespace MSU
 
         private void install_update(string update_folder_name)
         {
-            do
+            while (true)
             {
                 kill_process();
 
                 delete_dirs_and_files(update_folder_name);
 
+                if (check_deletion(update_folder_name))
+                {
+                    break;
+                }
+
                 Console.WriteLine("Wait for deleting...");
 
                 Thread.Sleep(1000);
-            } while (!check_deletion(update_folder_name));
+            }
 
             move_from_update_dir(update_folder_name);
 
@@ -89,7 +95,7 @@ namespace MSU
 
         private bool check_ready_to_update()
         {
-            return File.Exists("./Update.flag");
+            return File.Exists("./Update.flag") && Directory.Exists(update_dir_name);
         }
 
         private void move_from_update_dir(string update_folder_name)
