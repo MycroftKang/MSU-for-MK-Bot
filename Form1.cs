@@ -121,22 +121,18 @@ namespace MSU
 
             var di = new DirectoryInfo(Path.GetDirectoryName(Application.ExecutablePath));
 
-            if (!check_file)
+            string[] files = di.GetFiles().Select(f => f.Name).ToArray();
+
+            if (!files.Except(new[] { "Update.exe" }).Any())
             {
-                string[] files = di.GetFiles().Select(f => f.Name).ToArray();
-                if (!files.Except(new[] { "Update.exe" }).Any())
-                {
-                    check_file = true;
-                }
+                check_file = true;
             }
 
-            if (!check_dir)
+            string[] dirs = di.GetDirectories().Select(d => d.Name).ToArray();
+
+            if (!dirs.Except(new[] { update_folder_name }).Any())
             {
-                string[] dirs = di.GetDirectories().Select(d => d.Name).ToArray();
-                if (!dirs.Except(new[] { update_folder_name }).Any())
-                {
-                    check_dir = true;
-                }
+                check_dir = true;
             }
 
             return check_file && check_dir;
